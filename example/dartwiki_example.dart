@@ -1,4 +1,4 @@
-import 'package:dartwiki/dartwiki.dart';
+import 'package:dartwikijro/dartwiki.dart';
 
 void main() async {
   changeLanguage();

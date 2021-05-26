@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:dartwiki/src/response.dart';
+import 'package:dartwikijro/src/response.dart';
 
 enum WikiLocations { zh, en }
 
