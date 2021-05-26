@@ -1,5 +1,6 @@
 import 'dart:async';
-import 'package:dio/dio.dart';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:dartwiki/src/response.dart';
 
 enum WikiLocations { zh, en }
@@ -34,12 +35,9 @@ class Wikipedia {
 
   /// Search wiki by keyword
   Future<WikiSearchResponse> search(String keyword) async {
-    var response = await Dio().get(wikiAPI, queryParameters: {
-      'action': 'opensearch',
-      'search': keyword,
-    });
+    var response = await http.get(Uri.parse(wikiAPI + "?action=opensearch&search=" + keyword));
 
-    var data = WikiSearchResponse.fromJSON(response.data);
+    var data = WikiSearchResponse.fromJSON(jsonDecode(response.body));
     _controller.sink.add(data);
     return data;
   }
@@ -69,7 +67,7 @@ class Wikipedia {
       };
     }
 
-    var response = await Dio().get(wikiAPI, queryParameters: queryParameters);
-    return WikiQueryResponse.fromJson(response.data);
+    var response = await http.get(Uri.parse(wikiAPI + "?format=json&action=query&prop=extracts&titles=" + keyword));
+    return WikiQueryResponse.fromJson(jsonDecode(response.body));
   }
 }
