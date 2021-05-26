@@ -1,3 +1,5 @@
+import 'package:html/parser.dart';
+
 class WikiSearchResponse {
   final List<WikiSearchResults> searchResults;
 
@@ -85,12 +87,25 @@ class Response {
   double pageid;
   String title;
 
-  factory Response.fromJson(Map<String, dynamic> json) => Response(
-        extract: json['extract'],
-        ns: json['ns'].toDouble(),
-        pageid: json['pageid'].toDouble(),
-        title: json['title'],
-      );
+  factory Response.fromJson(Map<String, dynamic> json)  {
+    String res = '';
+    var document = parse(json['extract']);
+    var text = document.text;
+    var paragraphs = document.getElementsByTagName('p');
+    for(var para in paragraphs){
+      res += para.text;
+      for(var graph in para.children){
+        res += graph.text;
+      }
+      res += '\n';
+    }
+    return Response(
+  extract: res,
+  ns: json['ns'].toDouble(),
+  pageid: json['pageid'].toDouble(),
+  title: json['title'],
+  );
+  }
 
   Map<String, dynamic> toJson() => {
         'extract': extract,

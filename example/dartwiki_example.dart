@@ -2,6 +2,7 @@ import 'package:dartwikijro/dartwiki.dart';
 
 void main() async {
   changeLanguage();
+  queryPage();
 }
 
 void changeLanguage() async {
@@ -25,5 +26,5 @@ void queryPage() async {
   var wiki = Wikipedia();
   var results = await wiki.search('hello world');
   var queryResults = await wiki.getPage(results.searchResults[0].title);
-  print(queryResults);
+  print(queryResults.query.pages.values.first.extract);
 }
